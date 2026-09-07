@@ -7,6 +7,7 @@
     <title>LUNEX</title>
 
     <style>
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -14,18 +15,17 @@
         }
 
         body {
-            background: #08080d;
             color: white;
             font-family: Arial, sans-serif;
             min-height: 100vh;
-            overflow: hidden;
+            transition: background 0.5s;
         }
 
         .app {
             max-width: 500px;
             margin: auto;
             min-height: 100vh;
-            padding: 22px 18px;
+            padding: 20px 18px;
             display: flex;
             flex-direction: column;
         }
@@ -43,34 +43,99 @@
         }
 
         .profile {
-            width: 42px;
-            height: 42px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
-            background: #181821;
+            background: rgba(255,255,255,0.12);
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 21px;
+            cursor: pointer;
+        }
+
+        .season {
+            text-align: center;
+            margin-top: 18px;
+            padding: 10px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 14px;
+        }
+
+        .season-title {
+            font-size: 12px;
+            color: #9999a5;
+        }
+
+        .season-time {
+            margin-top: 4px;
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .stage-box {
+            text-align: center;
+            margin-top: 22px;
+        }
+
+        .stage {
+            font-size: 23px;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+
+        .world {
+            margin-top: 8px;
+            color: #aaaab5;
+            font-size: 13px;
         }
 
         .balance {
             text-align: center;
-            margin-top: 55px;
+            margin-top: 18px;
         }
 
         .balance-title {
-            color: #8d8d9a;
-            font-size: 14px;
-            margin-bottom: 8px;
+            color: #9999a5;
+            font-size: 13px;
+            margin-bottom: 5px;
         }
 
         .balance-number {
-            font-size: 48px;
+            font-size: 42px;
             font-weight: 900;
         }
 
         .coin {
-            font-size: 30px;
+            font-size: 27px;
+        }
+
+        .progress {
+            margin-top: 12px;
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            color: #9999a5;
+            font-size: 11px;
+            margin-bottom: 6px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255,255,255,0.10);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: white;
+            border-radius: 20px;
+            transition: width 0.3s;
         }
 
         .play-area {
@@ -87,11 +152,11 @@
             border: none;
             background: white;
             color: #08080d;
-            font-size: 27px;
+            font-size: 26px;
             font-weight: 900;
             cursor: pointer;
             box-shadow: 0 0 45px rgba(255,255,255,0.18);
-            transition: transform 0.15s;
+            transition: transform 0.12s;
         }
 
         .play-button:active {
@@ -100,11 +165,11 @@
 
         .energy {
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .energy-title {
-            color: #8d8d9a;
+            color: #9999a5;
             font-size: 13px;
             margin-bottom: 8px;
         }
@@ -112,14 +177,14 @@
         .energy-bar {
             width: 100%;
             height: 9px;
-            background: #1b1b24;
+            background: rgba(255,255,255,0.10);
             border-radius: 20px;
             overflow: hidden;
         }
 
         .energy-fill {
-            width: 80%;
             height: 100%;
+            width: 80%;
             background: white;
             border-radius: 20px;
             transition: width 0.3s;
@@ -128,16 +193,16 @@
         .bottom {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
+            gap: 9px;
         }
 
         .menu-button {
-            background: #15151d;
+            background: rgba(255,255,255,0.08);
             border: none;
             color: white;
             border-radius: 15px;
-            padding: 15px 5px;
-            font-size: 13px;
+            padding: 14px 4px;
+            font-size: 12px;
             font-weight: 700;
             cursor: pointer;
         }
@@ -147,6 +212,46 @@
             font-size: 20px;
             margin-bottom: 5px;
         }
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-box {
+            width: 100%;
+            max-width: 420px;
+            background: #15151d;
+            border-radius: 22px;
+            padding: 25px;
+        }
+
+        .modal-title {
+            font-size: 23px;
+            font-weight: 900;
+            margin-bottom: 20px;
+        }
+
+        .modal-text {
+            color: #b0b0ba;
+            line-height: 1.6;
+        }
+
+        .close {
+            margin-top: 20px;
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 13px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
     </style>
 </head>
 
@@ -155,123 +260,615 @@
 <div class="app">
 
     <div class="top">
-        <div class="logo">LUNEX</div>
-        <div class="profile">👤</div>
+
+        <div class="logo">
+            LUNEX
+        </div>
+
+        <div class="profile" onclick="openModal('profile')">
+            👤
+        </div>
+
     </div>
+
+
+    <div class="season">
+
+        <div class="season-title">
+            СЕЗОН
+        </div>
+
+        <div class="season-time" id="seasonTime">
+            Загрузка...
+        </div>
+
+    </div>
+
+
+    <div class="stage-box">
+
+        <div class="stage">
+            STAGE <span id="stage">1</span>
+        </div>
+
+        <div class="world" id="world">
+            БЕДНЫЙ РАЙОН
+        </div>
+
+    </div>
+
 
     <div class="balance">
-        <div class="balance-title">ТВОЙ БАЛАНС</div>
+
+        <div class="balance-title">
+            ТВОЙ БАЛАНС
+        </div>
 
         <div class="balance-number">
-            <span id="balance">0</span>
-            <span class="coin">⚡</span>
+
+            <span id="balance">
+                0
+            </span>
+
+            <span class="coin">
+                ⚡
+            </span>
+
         </div>
+
+
+        <div class="progress">
+
+            <div class="progress-text">
+
+                <span id="currentProgress">
+                    0
+                </span>
+
+                <span id="nextGoal">
+                    100 000
+                </span>
+
+            </div>
+
+            <div class="progress-bar">
+
+                <div
+                    class="progress-fill"
+                    id="progressFill">
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 
+
     <div class="play-area">
-        <button class="play-button" onclick="earn()">
-            ⚡<br>
+
+        <button
+            class="play-button"
+            onclick="earn()">
+
+            ⚡
+            <br>
+
             ИГРАТЬ
+
         </button>
+
     </div>
+
 
     <div class="energy">
 
         <div class="energy-title">
-            ЭНЕРГИЯ: <span id="energy">80</span>/100
+
+            ЭНЕРГИЯ:
+            <span id="energy">
+                80
+            </span>
+            /100
+
         </div>
 
         <div class="energy-bar">
-            <div class="energy-fill" id="energyFill"></div>
+
+            <div
+                class="energy-fill"
+                id="energyFill">
+            </div>
+
         </div>
 
     </div>
 
+
     <div class="bottom">
 
-        <button class="menu-button">
-            <span class="menu-icon">🏆</span>
+        <button
+            class="menu-button"
+            onclick="openModal('ranking')">
+
+            <span class="menu-icon">
+                🏆
+            </span>
+
             Рейтинг
+
         </button>
 
-        <button class="menu-button">
-            <span class="menu-icon">🎁</span>
+
+        <button
+            class="menu-button"
+            onclick="openModal('rewards')">
+
+            <span class="menu-icon">
+                🎁
+            </span>
+
             Награды
+
         </button>
 
-        <button class="menu-button">
-            <span class="menu-icon">👤</span>
+
+        <button
+            class="menu-button"
+            onclick="openModal('profile')">
+
+            <span class="menu-icon">
+                👤
+            </span>
+
             Профиль
+
         </button>
 
     </div>
 
 </div>
 
+
+<div
+    class="modal"
+    id="modal">
+
+    <div class="modal-box">
+
+        <div
+            class="modal-title"
+            id="modalTitle">
+        </div>
+
+        <div
+            class="modal-text"
+            id="modalText">
+        </div>
+
+        <button
+            class="close"
+            onclick="closeModal()">
+
+            ЗАКРЫТЬ
+
+        </button>
+
+    </div>
+
+</div>
+
+
 <script>
 
-let balance = Number(localStorage.getItem("lunex_balance")) || 0;
 
-let energy = Number(localStorage.getItem("lunex_energy"));
+/* =========================
+   СОХРАНЕНИЕ
+========================= */
+
+let balance =
+    Number(localStorage.getItem("lunex_balance")) || 0;
+
+
+let energy =
+    Number(localStorage.getItem("lunex_energy"));
+
 
 if (isNaN(energy)) {
+
     energy = 80;
+
 }
 
-let lastUpdate = Number(localStorage.getItem("lunex_last_update")) || Date.now();
+
+let lastUpdate =
+    Number(localStorage.getItem("lunex_last_update"))
+    || Date.now();
+
+
+/* =========================
+   15 STAGE
+========================= */
+
+const stages = [
+
+    0,
+
+    100000,
+
+    1000000,
+
+    10000000,
+
+    100000000,
+
+    1000000000,
+
+    10000000000,
+
+    100000000000,
+
+    1000000000000,
+
+    10000000000000,
+
+    100000000000000,
+
+    1000000000000000,
+
+    10000000000000000,
+
+    100000000000000000,
+
+    1000000000000000000
+
+];
+
+
+/* =========================
+   НАЗВАНИЯ МИРОВ
+========================= */
+
+const worlds = [
+
+    "БЕДНЫЙ РАЙОН",
+
+    "МАЛЕНЬКАЯ КОМНАТА",
+
+    "КВАРТИРА",
+
+    "ХОРОШАЯ КВАРТИРА",
+
+    "БОЛЬШОЙ ДОМ",
+
+    "БОГАТЫЙ ДОМ",
+
+    "РОСКОШНЫЙ ДОМ",
+
+    "ОСОБНЯК",
+
+    "ЭЛИТНЫЙ РАЙОН",
+
+    "НЕБОСКРЁБ",
+
+    "БОГАТЫЙ ГОРОД",
+
+    "МЕГАПОЛИС",
+
+    "ИМПЕРИЯ",
+
+    "LUNEX CITY",
+
+    "LUNEX EMPIRE"
+
+];
+
+
+/* =========================
+   СЕЗОН 15 ДНЕЙ
+========================= */
+
+const seasonLength =
+    15 * 24 * 60 * 60 * 1000;
+
+
+let seasonStart =
+    Number(localStorage.getItem("lunex_season_start"));
+
+
+if (!seasonStart) {
+
+    seasonStart = Date.now();
+
+    localStorage.setItem(
+        "lunex_season_start",
+        seasonStart
+    );
+
+}
+
+
+/* =========================
+   СОХРАНЕНИЕ
+========================= */
 
 function saveGame() {
 
-    localStorage.setItem("lunex_balance", balance);
+    localStorage.setItem(
+        "lunex_balance",
+        balance
+    );
 
-    localStorage.setItem("lunex_energy", energy);
+    localStorage.setItem(
+        "lunex_energy",
+        energy
+    );
 
-    localStorage.setItem("lunex_last_update", Date.now());
+    localStorage.setItem(
+        "lunex_last_update",
+        Date.now()
+    );
 
 }
+
+
+/* =========================
+   ЭНЕРГИЯ
+========================= */
 
 function restoreEnergy() {
 
     const now = Date.now();
-    const secondsPassed = Math.floor((now - lastUpdate) / 1000);
 
-    if (secondsPassed >= 10 && energy < 100) {
+    const secondsPassed =
+        Math.floor(
+            (now - lastUpdate) / 1000
+        );
 
-        const energyToAdd = Math.floor(secondsPassed / 10);
 
-        energy = Math.min(100, energy + energyToAdd);
+    if (
+        secondsPassed >= 10
+        &&
+        energy < 100
+    ) {
+
+        const energyToAdd =
+            Math.floor(
+                secondsPassed / 10
+            );
+
+
+        energy =
+            Math.min(
+                100,
+                energy + energyToAdd
+            );
+
 
         lastUpdate = now;
 
         saveGame();
+
     }
 
 }
 
-function updateScreen() {
 
-    document.getElementById("balance").innerText = balance;
+/* =========================
+   ОПРЕДЕЛЯЕМ STAGE
+========================= */
 
-    document.getElementById("energy").innerText = energy;
+function getStage() {
 
-    document.getElementById("energyFill").style.width =
-        energy + "%";
+    let currentStage = 1;
+
+
+    for (
+        let i = 0;
+        i < stages.length;
+        i++
+    ) {
+
+        if (
+            balance >= stages[i]
+        ) {
+
+            currentStage = i + 1;
+
+        }
+
+    }
+
+
+    return currentStage;
 
 }
 
-function earn() {
 
-    if (energy <= 0) {
+/* =========================
+   ФОН МИРА
+========================= */
 
-        alert("⚡ Энергия закончилась!");
+function updateWorld() {
+
+    const stage =
+        getStage();
+
+
+    document.getElementById(
+        "stage"
+    ).innerText = stage;
+
+
+    document.getElementById(
+        "world"
+    ).innerText =
+        worlds[stage - 1];
+
+
+    /*
+       Постепенное улучшение
+       внешнего вида
+    */
+
+
+    if (stage <= 3) {
+
+        document.body.style.background =
+            "#08080d";
+
+    }
+
+    else if (stage <= 6) {
+
+        document.body.style.background =
+            "#111217";
+
+    }
+
+    else if (stage <= 9) {
+
+        document.body.style.background =
+            "#16151d";
+
+    }
+
+    else if (stage <= 12) {
+
+        document.body.style.background =
+            "#1b1720";
+
+    }
+
+    else {
+
+        document.body.style.background =
+            "#211a25";
+
+    }
+
+}
+
+
+/* =========================
+   ЭКРАН
+========================= */
+
+function updateScreen() {
+
+    document.getElementById(
+        "balance"
+    ).innerText =
+        balance.toLocaleString("ru-RU");
+
+
+    document.getElementById(
+        "energy"
+    ).innerText =
+        energy;
+
+
+    document.getElementById(
+        "energyFill"
+    ).style.width =
+        energy + "%";
+
+
+    updateWorld();
+
+
+    const stage =
+        getStage();
+
+
+    if (stage >= 15) {
+
+        document.getElementById(
+            "currentProgress"
+        ).innerText =
+            "MAX";
+
+
+        document.getElementById(
+            "nextGoal"
+        ).innerText =
+            "MAX";
+
+
+        document.getElementById(
+            "progressFill"
+        ).style.width =
+            "100%";
+
 
         return;
 
     }
 
+
+    const currentGoal =
+        stages[stage - 1];
+
+
+    const nextGoalValue =
+        stages[stage];
+
+
+    const progress =
+        (
+            (balance - currentGoal)
+            /
+            (nextGoalValue - currentGoal)
+        ) * 100;
+
+
+    document.getElementById(
+        "currentProgress"
+    ).innerText =
+        balance.toLocaleString("ru-RU");
+
+
+    document.getElementById(
+        "nextGoal"
+    ).innerText =
+        nextGoalValue.toLocaleString("ru-RU");
+
+
+    document.getElementById(
+        "progressFill"
+    ).style.width =
+        Math.max(
+            0,
+            Math.min(
+                100,
+                progress
+            )
+        ) + "%";
+
+}
+
+
+/* =========================
+   ИГРА
+========================= */
+
+function earn() {
+
+    if (energy <= 0) {
+
+        alert(
+            "⚡ Энергия закончилась!"
+        );
+
+        return;
+
+    }
+
+
     balance += 1;
 
     energy -= 1;
+
 
     saveGame();
 
@@ -279,17 +876,230 @@ function earn() {
 
 }
 
+
+/* =========================
+   ТАЙМЕР СЕЗОНА
+========================= */
+
+function updateSeason() {
+
+    const now =
+        Date.now();
+
+
+    const end =
+        seasonStart
+        +
+        seasonLength;
+
+
+    let remaining =
+        end - now;
+
+
+    /*
+       Если сезон закончился
+    */
+
+    if (remaining <= 0) {
+
+        balance = 0;
+
+        energy = 80;
+
+        seasonStart = now;
+
+
+        localStorage.setItem(
+            "lunex_season_start",
+            seasonStart
+        );
+
+
+        saveGame();
+
+        alert(
+            "🏁 СЕЗОН ЗАКОНЧЕН!\n\n" +
+            "Начался новый сезон!"
+        );
+
+
+        remaining =
+            seasonLength;
+
+    }
+
+
+    const days =
+        Math.floor(
+            remaining /
+            (24 * 60 * 60 * 1000)
+        );
+
+
+    const hours =
+        Math.floor(
+            (
+                remaining %
+                (24 * 60 * 60 * 1000)
+            )
+            /
+            (60 * 60 * 1000)
+        );
+
+
+    const minutes =
+        Math.floor(
+            (
+                remaining %
+                (60 * 60 * 1000)
+            )
+            /
+            (60 * 1000)
+        );
+
+
+    document.getElementById(
+        "seasonTime"
+    ).innerText =
+
+        days + "д "
+        +
+        hours + "ч "
+        +
+        minutes + "м";
+
+}
+
+
+/* =========================
+   МОДАЛЬНЫЕ ОКНА
+========================= */
+
+function openModal(type) {
+
+    const modal =
+        document.getElementById(
+            "modal"
+        );
+
+
+    const title =
+        document.getElementById(
+            "modalTitle"
+        );
+
+
+    const text =
+        document.getElementById(
+            "modalText"
+        );
+
+
+    modal.style.display =
+        "flex";
+
+
+    if (type === "profile") {
+
+        title.innerText =
+            "👤 Профиль";
+
+
+        text.innerHTML =
+
+            "Игрок LUNEX<br><br>" +
+
+            "🏆 Stage: "
+            + getStage()
+            + "<br><br>" +
+
+            "⚡ Баланс: "
+            + balance.toLocaleString("ru-RU")
+            + "<br><br>" +
+
+            "🔋 Энергия: "
+            + energy
+            + "/100";
+
+    }
+
+
+    if (type === "ranking") {
+
+        title.innerText =
+            "🏆 Рейтинг";
+
+
+        text.innerHTML =
+
+            "🥇 TOP 1 — скоро здесь<br><br>" +
+
+            "🥈 TOP 2 — скоро здесь<br><br>" +
+
+            "🥉 TOP 3 — скоро здесь<br><br>" +
+
+            "👤 Твоё место — будет подключено позже.";
+
+    }
+
+
+    if (type === "rewards") {
+
+        title.innerText =
+            "🎁 Награды";
+
+
+        text.innerHTML =
+
+            "🔓 100 000 ⚡ — первая награда<br><br>" +
+
+            "🏆 Stage 5 — особая награда<br><br>" +
+
+            "💎 Stage 10 — редкая награда<br><br>" +
+
+            "👑 Stage 15 — главная награда<br><br>" +
+
+            "🎁 TOP 100 — сезонная награда";
+
+    }
+
+}
+
+
+function closeModal() {
+
+    document.getElementById(
+        "modal"
+    ).style.display =
+        "none";
+
+}
+
+
+/* =========================
+   ЗАПУСК
+========================= */
+
 restoreEnergy();
 
 updateScreen();
 
-setInterval(function() {
+updateSeason();
 
-    restoreEnergy();
 
-    updateScreen();
+setInterval(
+    function() {
 
-}, 1000);
+        restoreEnergy();
+
+        updateScreen();
+
+        updateSeason();
+
+    },
+    1000
+);
 
 </script>
 
