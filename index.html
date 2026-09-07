@@ -691,62 +691,33 @@ function getStage() {
 
 function updateWorld() {
 
-    const stage =
-        getStage();
+    const stage = getStage();
 
+    document.getElementById("stage").innerText = stage;
 
-    document.getElementById(
-        "stage"
-    ).innerText = stage;
-
-
-    document.getElementById(
-        "world"
-    ).innerText =
+    document.getElementById("world").innerText =
         worlds[stage - 1];
 
+    const backgrounds = [
+        "#08080d",
+        "#0b0b10",
+        "#0e0e13",
+        "#111217",
+        "#14131a",
+        "#17151c",
+        "#1a171f",
+        "#1d1922",
+        "#201b25",
+        "#231e28",
+        "#26212b",
+        "#29242e",
+        "#2c2731",
+        "#302a35",
+        "#352e3a"
+    ];
 
-    /*
-       Постепенное улучшение
-       внешнего вида
-    */
-
-
-    if (stage <= 3) {
-
-        document.body.style.background =
-            "#08080d";
-
-    }
-
-    else if (stage <= 6) {
-
-        document.body.style.background =
-            "#111217";
-
-    }
-
-    else if (stage <= 9) {
-
-        document.body.style.background =
-            "#16151d";
-
-    }
-
-    else if (stage <= 12) {
-
-        document.body.style.background =
-            "#1b1720";
-
-    }
-
-    else {
-
-        document.body.style.background =
-            "#211a25";
-
-    }
-
+    document.body.style.background =
+        backgrounds[stage - 1];
 }
 
 
