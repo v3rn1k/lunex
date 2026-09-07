@@ -122,6 +122,7 @@
             height: 100%;
             background: white;
             border-radius: 20px;
+            transition: width 0.3s;
         }
 
         .bottom {
@@ -138,6 +139,7 @@
             padding: 15px 5px;
             font-size: 13px;
             font-weight: 700;
+            cursor: pointer;
         }
 
         .menu-icon {
@@ -159,8 +161,10 @@
 
     <div class="balance">
         <div class="balance-title">ТВОЙ БАЛАНС</div>
+
         <div class="balance-number">
-            0 <span class="coin">⚡</span>
+            <span id="balance">0</span>
+            <span class="coin">⚡</span>
         </div>
     </div>
 
@@ -172,6 +176,7 @@
     </div>
 
     <div class="energy">
+
         <div class="energy-title">
             ЭНЕРГИЯ: <span id="energy">80</span>/100
         </div>
@@ -179,6 +184,7 @@
         <div class="energy-bar">
             <div class="energy-fill" id="energyFill"></div>
         </div>
+
     </div>
 
     <div class="bottom">
@@ -204,27 +210,88 @@
 
 <script>
 
-let balance = 0;
-let energy = 80;
+let balance = Number(localStorage.getItem("lunex_balance")) || 0;
 
-function earn() {
+let energy = Number(localStorage.getItem("lunex_energy"));
 
-    if (energy <= 0) {
-        alert("⚡ Энергия закончилась!");
-        return;
+if (isNaN(energy)) {
+    energy = 80;
+}
+
+let lastUpdate = Number(localStorage.getItem("lunex_last_update")) || Date.now();
+
+function saveGame() {
+
+    localStorage.setItem("lunex_balance", balance);
+
+    localStorage.setItem("lunex_energy", energy);
+
+    localStorage.setItem("lunex_last_update", Date.now());
+
+}
+
+function restoreEnergy() {
+
+    let now = Date.now();
+
+    let secondsPassed = Math.floor((now - lastUpdate) / 1000);
+
+    let energyToAdd = Math.floor(secondsPassed / 10);
+
+    if (energyToAdd > 0) {
+
+        energy = Math.min(100, energy + energyToAdd);
+
+        lastUpdate = now;
+
+        saveGame();
+
     }
 
-    balance += 1;
-    energy -= 1;
+}
 
-    document.querySelector(".balance-number").innerHTML =
-        balance + ' <span class="coin">⚡</span>';
+function updateScreen() {
+
+    document.getElementById("balance").innerText = balance;
 
     document.getElementById("energy").innerText = energy;
 
     document.getElementById("energyFill").style.width =
         energy + "%";
+
 }
+
+function earn() {
+
+    if (energy <= 0) {
+
+        alert("⚡ Энергия закончилась!");
+
+        return;
+
+    }
+
+    balance += 1;
+
+    energy -= 1;
+
+    saveGame();
+
+    updateScreen();
+
+}
+
+restoreEnergy();
+
+updateScreen();
+
+setInterval(function() {
+
+    restoreEnergy();
+
+    updateScreen();
+
+}, 1000);
 
 </script>
 
