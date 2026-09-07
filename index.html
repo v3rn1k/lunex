@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>LUNEX</title>
 
     <style>
@@ -18,8 +17,93 @@
             color: white;
             font-family: Arial, sans-serif;
             min-height: 100vh;
-            transition: background 0.5s;
+            transition: background 0.7s;
+            overflow-x: hidden;
         }
+
+        /* =========================
+           МИР
+        ========================= */
+
+        .world-background {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            transition: all 0.7s;
+        }
+
+        .world-background::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(
+                    rgba(0,0,0,0.25),
+                    rgba(0,0,0,0.65)
+                );
+        }
+
+        /* STAGE 1 */
+
+        .stage1 {
+            background:
+                radial-gradient(
+                    circle at 20% 70%,
+                    rgba(80,80,80,0.15),
+                    transparent 25%
+                ),
+                linear-gradient(
+                    160deg,
+                    #050507,
+                    #101014 55%,
+                    #050507
+                );
+        }
+
+        /* STAGE 2 */
+
+        .stage2 {
+            background:
+                radial-gradient(
+                    circle at 25% 35%,
+                    rgba(120,120,140,0.25),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 80% 70%,
+                    rgba(100,100,120,0.18),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    145deg,
+                    #101117,
+                    #252733,
+                    #111219
+                );
+        }
+
+        .city-lights {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 110px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.7s;
+            background:
+                repeating-linear-gradient(
+                    90deg,
+                    transparent 0px,
+                    transparent 35px,
+                    rgba(255,255,255,0.08) 36px,
+                    rgba(255,255,255,0.08) 55px
+                );
+        }
+
+        /* =========================
+           APP
+        ========================= */
 
         .app {
             max-width: 500px;
@@ -28,7 +112,12 @@
             padding: 20px 18px;
             display: flex;
             flex-direction: column;
+            position: relative;
         }
+
+        /* =========================
+           TOP
+        ========================= */
 
         .top {
             display: flex;
@@ -52,7 +141,12 @@
             align-items: center;
             font-size: 21px;
             cursor: pointer;
+            backdrop-filter: blur(10px);
         }
+
+        /* =========================
+           SEASON
+        ========================= */
 
         .season {
             text-align: center;
@@ -60,6 +154,7 @@
             padding: 10px;
             background: rgba(255,255,255,0.08);
             border-radius: 14px;
+            backdrop-filter: blur(10px);
         }
 
         .season-title {
@@ -72,6 +167,10 @@
             font-size: 15px;
             font-weight: 800;
         }
+
+        /* =========================
+           STAGE
+        ========================= */
 
         .stage-box {
             text-align: center;
@@ -88,7 +187,13 @@
             margin-top: 8px;
             color: #aaaab5;
             font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
+
+        /* =========================
+           BALANCE
+        ========================= */
 
         .balance {
             text-align: center;
@@ -109,6 +214,10 @@
         .coin {
             font-size: 27px;
         }
+
+        /* =========================
+           PROGRESS
+        ========================= */
 
         .progress {
             margin-top: 12px;
@@ -138,6 +247,10 @@
             transition: width 0.3s;
         }
 
+        /* =========================
+           PLAY
+        ========================= */
+
         .play-area {
             flex: 1;
             display: flex;
@@ -155,13 +268,20 @@
             font-size: 26px;
             font-weight: 900;
             cursor: pointer;
-            box-shadow: 0 0 45px rgba(255,255,255,0.18);
-            transition: transform 0.12s;
+            box-shadow:
+                0 0 45px rgba(255,255,255,0.18);
+            transition:
+                transform 0.12s,
+                box-shadow 0.3s;
         }
 
         .play-button:active {
             transform: scale(0.94);
         }
+
+        /* =========================
+           ENERGY
+        ========================= */
 
         .energy {
             text-align: center;
@@ -190,6 +310,10 @@
             transition: width 0.3s;
         }
 
+        /* =========================
+           BOTTOM
+        ========================= */
+
         .bottom {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
@@ -205,6 +329,7 @@
             font-size: 12px;
             font-weight: 700;
             cursor: pointer;
+            backdrop-filter: blur(10px);
         }
 
         .menu-icon {
@@ -212,6 +337,10 @@
             font-size: 20px;
             margin-bottom: 5px;
         }
+
+        /* =========================
+           MODAL
+        ========================= */
 
         .modal {
             display: none;
@@ -221,6 +350,7 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
+            z-index: 10;
         }
 
         .modal-box {
@@ -257,6 +387,9 @@
 
 <body>
 
+<div id="worldBackground" class="world-background stage1"></div>
+<div id="cityLights" class="city-lights"></div>
+
 <div class="app">
 
     <div class="top">
@@ -265,12 +398,15 @@
             LUNEX
         </div>
 
-        <div class="profile" onclick="openModal('profile')">
+        <div
+            class="profile"
+            onclick="openModal('profile')">
+
             👤
+
         </div>
 
     </div>
-
 
     <div class="season">
 
@@ -278,25 +414,34 @@
             СЕЗОН
         </div>
 
-        <div class="season-time" id="seasonTime">
+        <div
+            class="season-time"
+            id="seasonTime">
+
             Загрузка...
+
         </div>
 
     </div>
-
 
     <div class="stage-box">
 
         <div class="stage">
-            STAGE <span id="stage">1</span>
+
+            STAGE
+            <span id="stage">1</span>
+
         </div>
 
-        <div class="world" id="world">
+        <div
+            class="world"
+            id="world">
+
             БЕДНЫЙ РАЙОН
+
         </div>
 
     </div>
-
 
     <div class="balance">
 
@@ -316,7 +461,6 @@
 
         </div>
 
-
         <div class="progress">
 
             <div class="progress-text">
@@ -326,7 +470,7 @@
                 </span>
 
                 <span id="nextGoal">
-                    100 000
+                    200
                 </span>
 
             </div>
@@ -344,7 +488,6 @@
 
     </div>
 
-
     <div class="play-area">
 
         <button
@@ -353,13 +496,11 @@
 
             ⚡
             <br>
-
             ИГРАТЬ
 
         </button>
 
     </div>
-
 
     <div class="energy">
 
@@ -384,7 +525,6 @@
 
     </div>
 
-
     <div class="bottom">
 
         <button
@@ -399,7 +539,6 @@
 
         </button>
 
-
         <button
             class="menu-button"
             onclick="openModal('rewards')">
@@ -411,7 +550,6 @@
             Награды
 
         </button>
-
 
         <button
             class="menu-button"
@@ -428,7 +566,6 @@
     </div>
 
 </div>
-
 
 <div
     class="modal"
@@ -458,28 +595,17 @@
 
 </div>
 
-
 <script>
-
-
-/* =========================
-   СОХРАНЕНИЕ
-========================= */
 
 let balance =
     Number(localStorage.getItem("lunex_balance")) || 0;
 
-
 let energy =
     Number(localStorage.getItem("lunex_energy"));
 
-
 if (isNaN(energy)) {
-
     energy = 80;
-
 }
-
 
 let lastUpdate =
     Number(localStorage.getItem("lunex_last_update"))
@@ -487,7 +613,7 @@ let lastUpdate =
 
 
 /* =========================
-   15 STAGE
+   STAGES
 ========================= */
 
 const stages = [
@@ -526,7 +652,7 @@ const stages = [
 
 
 /* =========================
-   НАЗВАНИЯ МИРОВ
+   WORLDS
 ========================= */
 
 const worlds = [
@@ -565,16 +691,14 @@ const worlds = [
 
 
 /* =========================
-   СЕЗОН 15 ДНЕЙ
+   SEASON
 ========================= */
 
 const seasonLength =
     15 * 24 * 60 * 60 * 1000;
 
-
 let seasonStart =
     Number(localStorage.getItem("lunex_season_start"));
-
 
 if (!seasonStart) {
 
@@ -589,7 +713,7 @@ if (!seasonStart) {
 
 
 /* =========================
-   СОХРАНЕНИЕ
+   SAVE
 ========================= */
 
 function saveGame() {
@@ -613,7 +737,7 @@ function saveGame() {
 
 
 /* =========================
-   ЭНЕРГИЯ
+   ENERGY
 ========================= */
 
 function restoreEnergy() {
@@ -624,7 +748,6 @@ function restoreEnergy() {
         Math.floor(
             (now - lastUpdate) / 1000
         );
-
 
     if (
         secondsPassed >= 10
@@ -637,13 +760,11 @@ function restoreEnergy() {
                 secondsPassed / 10
             );
 
-
         energy =
             Math.min(
                 100,
                 energy + energyToAdd
             );
-
 
         lastUpdate = now;
 
@@ -655,13 +776,12 @@ function restoreEnergy() {
 
 
 /* =========================
-   ОПРЕДЕЛЯЕМ STAGE
+   GET STAGE
 ========================= */
 
 function getStage() {
 
     let currentStage = 1;
-
 
     for (
         let i = 0;
@@ -679,50 +799,76 @@ function getStage() {
 
     }
 
-
     return currentStage;
 
 }
 
 
 /* =========================
-   ФОН МИРА
+   WORLD
 ========================= */
 
 function updateWorld() {
 
-    const stage = getStage();
+    const stage =
+        getStage();
 
-    document.getElementById("stage").innerText = stage;
+    document.getElementById(
+        "stage"
+    ).innerText =
+        stage;
 
-    document.getElementById("world").innerText =
+    document.getElementById(
+        "world"
+    ).innerText =
         worlds[stage - 1];
 
-    const backgrounds = [
-        "#08080d",
-        "#0b0b10",
-        "#0e0e13",
-        "#111217",
-        "#14131a",
-        "#17151c",
-        "#1a171f",
-        "#1d1922",
-        "#201b25",
-        "#231e28",
-        "#26212b",
-        "#29242e",
-        "#2c2731",
-        "#302a35",
-        "#352e3a"
-    ];
+    const background =
+        document.getElementById(
+            "worldBackground"
+        );
 
-    document.body.style.background =
-        backgrounds[stage - 1];
+    const cityLights =
+        document.getElementById(
+            "cityLights"
+        );
+
+
+    if (stage === 1) {
+
+        background.className =
+            "world-background stage1";
+
+        cityLights.style.opacity =
+            "0";
+
+    }
+
+    else if (stage === 2) {
+
+        background.className =
+            "world-background stage2";
+
+        cityLights.style.opacity =
+            "1";
+
+    }
+
+    else {
+
+        background.className =
+            "world-background stage2";
+
+        cityLights.style.opacity =
+            "1";
+
+    }
+
 }
 
 
 /* =========================
-   ЭКРАН
+   SCREEN
 ========================= */
 
 function updateScreen() {
@@ -732,25 +878,20 @@ function updateScreen() {
     ).innerText =
         balance.toLocaleString("ru-RU");
 
-
     document.getElementById(
         "energy"
     ).innerText =
         energy;
-
 
     document.getElementById(
         "energyFill"
     ).style.width =
         energy + "%";
 
-
     updateWorld();
-
 
     const stage =
         getStage();
-
 
     if (stage >= 15) {
 
@@ -759,31 +900,25 @@ function updateScreen() {
         ).innerText =
             "MAX";
 
-
         document.getElementById(
             "nextGoal"
         ).innerText =
             "MAX";
-
 
         document.getElementById(
             "progressFill"
         ).style.width =
             "100%";
 
-
         return;
 
     }
 
-
     const currentGoal =
         stages[stage - 1];
 
-
     const nextGoalValue =
         stages[stage];
-
 
     const progress =
         (
@@ -792,18 +927,15 @@ function updateScreen() {
             (nextGoalValue - currentGoal)
         ) * 100;
 
-
     document.getElementById(
         "currentProgress"
     ).innerText =
         balance.toLocaleString("ru-RU");
 
-
     document.getElementById(
         "nextGoal"
     ).innerText =
         nextGoalValue.toLocaleString("ru-RU");
-
 
     document.getElementById(
         "progressFill"
@@ -820,7 +952,7 @@ function updateScreen() {
 
 
 /* =========================
-   ИГРА
+   EARN
 ========================= */
 
 function earn() {
@@ -835,11 +967,9 @@ function earn() {
 
     }
 
-
     balance += 10;
 
     energy -= 1;
-
 
     saveGame();
 
@@ -849,7 +979,7 @@ function earn() {
 
 
 /* =========================
-   ТАЙМЕР СЕЗОНА
+   SEASON TIMER
 ========================= */
 
 function updateSeason() {
@@ -857,20 +987,12 @@ function updateSeason() {
     const now =
         Date.now();
 
-
     const end =
-        seasonStart
-        +
+        seasonStart +
         seasonLength;
-
 
     let remaining =
         end - now;
-
-
-    /*
-       Если сезон закончился
-    */
 
     if (remaining <= 0) {
 
@@ -880,12 +1002,10 @@ function updateSeason() {
 
         seasonStart = now;
 
-
         localStorage.setItem(
             "lunex_season_start",
             seasonStart
         );
-
 
         saveGame();
 
@@ -894,12 +1014,10 @@ function updateSeason() {
             "Начался новый сезон!"
         );
 
-
         remaining =
             seasonLength;
 
     }
-
 
     const days =
         Math.floor(
@@ -907,65 +1025,48 @@ function updateSeason() {
             (24 * 60 * 60 * 1000)
         );
 
-
     const hours =
         Math.floor(
             (
                 remaining %
                 (24 * 60 * 60 * 1000)
-            )
-            /
+            ) /
             (60 * 60 * 1000)
         );
-
 
     const minutes =
         Math.floor(
             (
                 remaining %
                 (60 * 60 * 1000)
-            )
-            /
+            ) /
             (60 * 1000)
         );
-
 
     document.getElementById(
         "seasonTime"
     ).innerText =
-
-        days + "д "
-        +
-        hours + "ч "
-        +
+        days + "д " +
+        hours + "ч " +
         minutes + "м";
 
 }
 
 
 /* =========================
-   МОДАЛЬНЫЕ ОКНА
+   MODALS
 ========================= */
 
 function openModal(type) {
 
     const modal =
-        document.getElementById(
-            "modal"
-        );
-
+        document.getElementById("modal");
 
     const title =
-        document.getElementById(
-            "modalTitle"
-        );
-
+        document.getElementById("modalTitle");
 
     const text =
-        document.getElementById(
-            "modalText"
-        );
-
+        document.getElementById("modalText");
 
     modal.style.display =
         "flex";
@@ -976,22 +1077,20 @@ function openModal(type) {
         title.innerText =
             "👤 Профиль";
 
-
         text.innerHTML =
-
             "Игрок LUNEX<br><br>" +
 
-            "🏆 Stage: "
-            + getStage()
-            + "<br><br>" +
+            "🏆 Stage: " +
+            getStage() +
+            "<br><br>" +
 
-            "⚡ Баланс: "
-            + balance.toLocaleString("ru-RU")
-            + "<br><br>" +
+            "⚡ Баланс: " +
+            balance.toLocaleString("ru-RU") +
+            "<br><br>" +
 
-            "🔋 Энергия: "
-            + energy
-            + "/100";
+            "🔋 Энергия: " +
+            energy +
+            "/100";
 
     }
 
@@ -1001,15 +1100,10 @@ function openModal(type) {
         title.innerText =
             "🏆 Рейтинг";
 
-
         text.innerHTML =
-
             "🥇 TOP 1 — скоро здесь<br><br>" +
-
             "🥈 TOP 2 — скоро здесь<br><br>" +
-
             "🥉 TOP 3 — скоро здесь<br><br>" +
-
             "👤 Твоё место — будет подключено позже.";
 
     }
@@ -1020,17 +1114,11 @@ function openModal(type) {
         title.innerText =
             "🎁 Награды";
 
-
         text.innerHTML =
-
             "🔓 100 000 ⚡ — первая награда<br><br>" +
-
             "🏆 Stage 5 — особая награда<br><br>" +
-
             "💎 Stage 10 — редкая награда<br><br>" +
-
             "👑 Stage 15 — главная награда<br><br>" +
-
             "🎁 TOP 100 — сезонная награда";
 
     }
@@ -1049,7 +1137,7 @@ function closeModal() {
 
 
 /* =========================
-   ЗАПУСК
+   START
 ========================= */
 
 restoreEnergy();
@@ -1057,7 +1145,6 @@ restoreEnergy();
 updateScreen();
 
 updateSeason();
-
 
 setInterval(
     function() {
