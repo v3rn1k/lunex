@@ -1,15 +1,232 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>LUNEX</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #08080d;
+            color: white;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .app {
+            max-width: 500px;
+            margin: auto;
+            min-height: 100vh;
+            padding: 22px 18px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 3px;
+        }
+
+        .profile {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #181821;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 21px;
+        }
+
+        .balance {
+            text-align: center;
+            margin-top: 55px;
+        }
+
+        .balance-title {
+            color: #8d8d9a;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .balance-number {
+            font-size: 48px;
+            font-weight: 900;
+        }
+
+        .coin {
+            font-size: 30px;
+        }
+
+        .play-area {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .play-button {
+            width: 190px;
+            height: 190px;
+            border-radius: 50%;
+            border: none;
+            background: white;
+            color: #08080d;
+            font-size: 27px;
+            font-weight: 900;
+            cursor: pointer;
+            box-shadow: 0 0 45px rgba(255,255,255,0.18);
+            transition: transform 0.15s;
+        }
+
+        .play-button:active {
+            transform: scale(0.94);
+        }
+
+        .energy {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .energy-title {
+            color: #8d8d9a;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .energy-bar {
+            width: 100%;
+            height: 9px;
+            background: #1b1b24;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .energy-fill {
+            width: 80%;
+            height: 100%;
+            background: white;
+            border-radius: 20px;
+        }
+
+        .bottom {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+        }
+
+        .menu-button {
+            background: #15151d;
+            border: none;
+            color: white;
+            border-radius: 15px;
+            padding: 15px 5px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .menu-icon {
+            display: block;
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+    </style>
 </head>
 
 <body>
 
-    <h1>🎮 LUNEX</h1>
-    <p>Твоя игра скоро здесь!</p>
+<div class="app">
+
+    <div class="top">
+        <div class="logo">LUNEX</div>
+        <div class="profile">👤</div>
+    </div>
+
+    <div class="balance">
+        <div class="balance-title">ТВОЙ БАЛАНС</div>
+        <div class="balance-number">
+            0 <span class="coin">⚡</span>
+        </div>
+    </div>
+
+    <div class="play-area">
+        <button class="play-button" onclick="earn()">
+            ⚡<br>
+            ИГРАТЬ
+        </button>
+    </div>
+
+    <div class="energy">
+        <div class="energy-title">
+            ЭНЕРГИЯ: <span id="energy">80</span>/100
+        </div>
+
+        <div class="energy-bar">
+            <div class="energy-fill" id="energyFill"></div>
+        </div>
+    </div>
+
+    <div class="bottom">
+
+        <button class="menu-button">
+            <span class="menu-icon">🏆</span>
+            Рейтинг
+        </button>
+
+        <button class="menu-button">
+            <span class="menu-icon">🎁</span>
+            Награды
+        </button>
+
+        <button class="menu-button">
+            <span class="menu-icon">👤</span>
+            Профиль
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+let balance = 0;
+let energy = 80;
+
+function earn() {
+
+    if (energy <= 0) {
+        alert("⚡ Энергия закончилась!");
+        return;
+    }
+
+    balance += 1;
+    energy -= 1;
+
+    document.querySelector(".balance-number").innerHTML =
+        balance + ' <span class="coin">⚡</span>';
+
+    document.getElementById("energy").innerText = energy;
+
+    document.getElementById("energyFill").style.width =
+        energy + "%";
+}
+
+</script>
 
 </body>
 </html>
