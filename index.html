@@ -232,20 +232,18 @@ function saveGame() {
 
 function restoreEnergy() {
 
-    let now = Date.now();
+    const now = Date.now();
+    const secondsPassed = Math.floor((now - lastUpdate) / 1000);
 
-    let secondsPassed = Math.floor((now - lastUpdate) / 1000);
+    if (secondsPassed >= 10 && energy < 100) {
 
-    let energyToAdd = Math.floor(secondsPassed / 10);
-
-    if (energyToAdd > 0) {
+        const energyToAdd = Math.floor(secondsPassed / 10);
 
         energy = Math.min(100, energy + energyToAdd);
 
         lastUpdate = now;
 
         saveGame();
-
     }
 
 }
